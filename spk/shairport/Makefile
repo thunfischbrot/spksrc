@@ -3,7 +3,7 @@ SPK_VERS = 1.0
 SPK_REV = 1
 SPK_ICON = src/shairport.png
 
-DEPENDS =  cross/$(SPK_NAME)
+DEPENDS =  cross/busybox cross/$(SPK_NAME)
 
 MAINTAINER = Lost Carrier
 DESCRIPTION = Use Synology NAS as an AirPlay-Receiver. Requires USB-Soundcard or speakers.
@@ -19,6 +19,9 @@ SSS_SCRIPT       = src/dsm-control.sh
 ADDITIONAL_SCRIPTS =
 
 INSTALL_PREFIX = /usr/local/$(SPK_NAME)
+
+BUSYBOX_CONFIG = usrmng
+ENV += BUSYBOX_CONFIG="$(BUSYBOX_CONFIG)"
 
 include ../../mk/spksrc.spk.mk
 

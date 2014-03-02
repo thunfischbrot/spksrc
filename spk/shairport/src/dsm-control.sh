@@ -3,7 +3,9 @@
 # Package
 PACKAGE="shairport"
 DNAME="ShairPort"
+
 # Others
+USER="shairport"
 SHAIRPORT="${SYNOPKG_PKGDEST}/bin/shairport"
 VAR_DIR="${SYNOPKG_PKGDEST}/var"
 PID_FILE="${VAR_DIR}/${PACKAGE}.pid"
@@ -12,8 +14,8 @@ PID_FILE="${VAR_DIR}/${PACKAGE}.pid"
 start_daemon ()
 {
     # Launch the service in the background.
-	cd ${SYNOPKG_PKGDEST}
-	$SHAIRPORT --daemon --pidfile="$PID_FILE" --log=$SYNOPKG_TEMP_LOGFILE
+    cd ${SYNOPKG_PKGDEST}
+    su - ${USER} -c "$SHAIRPORT --daemon --pidfile='$PID_FILE' --log=$SYNOPKG_TEMP_LOGFILE"
     # Wait until the service  is ready (race condition here).
     counter=5
     while [ $counter -gt 0 ]
