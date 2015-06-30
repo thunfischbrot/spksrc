@@ -13,6 +13,7 @@ TMP_DIR="${SYNOPKG_PKGDEST}/../../@tmp"
 
 SERVICETOOL="/usr/syno/bin/servicetool"
 FWPORTS="/var/packages/${PACKAGE}/scripts/${PACKAGE}.sc"
+CONFIG_FILE="${INSTALL_DIR}/var/shairport-sync.conf"
 
 preinst ()
 {
@@ -29,6 +30,7 @@ postinst ()
 
     # Add firewall config
     ${SERVICETOOL} --install-configure-file --package ${FWPORTS} >> /dev/null
+    echo -e "general =\n{\n\tport = 8303;\n\tudp_port_base = 8303;\n\tudp_port_range = 10;\n};\n" > ${CONFIG_FILE}
 
     exit 0
 
@@ -75,13 +77,14 @@ preupgrade ()
 
 postupgrade ()
 {
-    # Add firewall config
-    ${SERVICETOOL} --install-configure-file --package ${FWPORTS} >> /dev/null
-
     # Restore some stuff
     rm -fr ${INSTALL_DIR}/var
     mv ${TMP_DIR}/${PACKAGE}/var ${INSTALL_DIR}/
     rm -fr ${TMP_DIR}/${PACKAGE}
- 
+
+    # Add firewall config
+    ${SERVICETOOL} --install-configure-file --package ${FWPORTS} >> /dev/null
+    echo -e "general =\n{\n\tport = 8303;\n\tudp_port_base = 8303;\n\tudp_port_range = 10;\n};\n" > ${CONFIG_FILE}
+
     exit 0
 }
