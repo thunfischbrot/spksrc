@@ -1,6 +1,6 @@
 SPK_NAME = shairport-sync
-SPK_VERS = 2.3.0
-SPK_REV = 1
+SPK_VERS = 2.3.5
+SPK_REV = 2
 SPK_ICON = src/shairport-sync.png
 
 DEPENDS =  cross/busybox cross/$(SPK_NAME)
