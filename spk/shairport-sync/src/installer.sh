@@ -59,6 +59,11 @@ preupgrade ()
 {
     # Stop the package
     ${SSS} stop > /dev/null
+    
+    # Remove firewall config
+    if [ "${SYNOPKG_PKG_STATUS}" == "UNINSTALL" ]; then
+        ${SERVICETOOL} --remove-configure-file --package ${PACKAGE}.sc >> /dev/null
+    fi
 
     # Save some stuff
     rm -fr ${TMP_DIR}/${PACKAGE}
@@ -70,10 +75,13 @@ preupgrade ()
 
 postupgrade ()
 {
+    # Add firewall config
+    ${SERVICETOOL} --install-configure-file --package ${FWPORTS} >> /dev/null
+
     # Restore some stuff
     rm -fr ${INSTALL_DIR}/var
     mv ${TMP_DIR}/${PACKAGE}/var ${INSTALL_DIR}/
     rm -fr ${TMP_DIR}/${PACKAGE}
-
+ 
     exit 0
 }
